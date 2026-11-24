@@ -8,9 +8,11 @@ import { dirname, resolve } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const target = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-let png: Buffer;
+// plain JavaScript syntax on purpose: runs on any Node 22, with or without type stripping
+const source = resolve(here, 'entry.png');
+let png = null;
 try {
-  png = readFileSync(resolve(here, 'entry.png'));
+  png = readFileSync(source);
 } catch {
   console.error('no entry.png beside main.ts; render it with `python3 draw.py`');
   process.exit(1);
